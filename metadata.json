@@ -2,23 +2,24 @@
   "name": "puppetfinland-robot",
   "version": "0.1.0",
   "author": "Puppet-Finland team",
-  "summary": "",
+  "summary": "Opinionated module for managing automation for Robot Framework-based Robots",
   "license": "BSD-2-Clause",
-  "source": "",
+  "source": "https://github.com/Puppet-Finland/puppet-robot.git",
   "dependencies": [
-
+    {
+      "name": "puppetlabs/accounts",
+      "version_requirement": ">= 7.0.0 < 8.0.0"
+    },
+    {
+      "name": "puppet/systemd",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
+    }
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "Debian",
-      "operatingsystemrelease": [
-        "10"
-      ]
-    },
-    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
-        "18.04"
+        "20.04"
       ]
     }
   ],
