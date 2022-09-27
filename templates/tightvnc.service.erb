@@ -1,0 +1,15 @@
+# Source: https://gist.github.com/spinxz/1692ff042a7cfd17583b
+[Unit]
+Description=Remote desktop service (VNC)
+After=syslog.target network.target
+
+[Service]
+Type=forking
+User=robot
+
+ExecStartPre=/bin/sh -c '/usr/bin/vncserver -kill %i > /dev/null 2>&1 || :'
+ExecStart=/usr/bin/vncserver -geometry 1280x1024 -depth 16 -dpi 120 -alwaysshared -localhost :1
+ExecStop=/usr/bin/vncserver -kill :1
+
+[Install]
+WantedBy=multi-user.target
