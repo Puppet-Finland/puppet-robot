@@ -3,15 +3,21 @@
 #
 # @url https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04
 #
-class robot
-(
+# @param robot_user_password
+#   Password hash for user "robot"
+# @param robot_user_sshkeys
+#   A list of authorized SSH keys for the "robot" user
+# @param vnc_password
+#   VNC password
+# @param deployment_key
+#   SSH key used to fetch Git repository/repositories which contain robot tasks
+#
+class robot (
   String        $robot_user_password,
   Array[String] $robot_user_sshkeys,
   String        $vnc_password,
   String        $deployment_key
-)
-{
-
+) {
   $robot_home          = '/home/robot'
 
   # We use a light-weight desktop to reduce memory and CPU footprint
@@ -44,7 +50,7 @@ class robot
     user    => 'robot',
     creates => "${robot_home}/.vnc/passwd",
     path    => ['/bin', '/usr/bin'],
-    require => [ File["${robot_home}/.vnc"], Package['tightvncserver'] ],
+    require => [File["${robot_home}/.vnc"], Package['tightvncserver']],
   }
 
   file { "${robot_home}/.vnc/passwd":
@@ -56,7 +62,7 @@ class robot
 
   # Ensure that when we connect to VNC we get a proper desktop (xfce4)
   file { "${robot_home}/.vnc/xstartup":
-    ensure  => present,
+    ensure  => file,
     owner   => 'robot',
     group   => 'robot',
     mode    => '0755',
@@ -65,7 +71,7 @@ class robot
   }
 
   file { '/etc/X11/Xvnc-session':
-    ensure  => present,
+    ensure  => file,
     content => template('robot/Xvnc-session.erb'),
     owner   => 'root',
     group   => 'root',
@@ -105,7 +111,7 @@ class robot
 
   # Install deployment key used to clone Robot script repos
   file { '/home/robot/.ssh/id_rsa':
-    ensure  => present,
+    ensure  => file,
     owner   => 'robot',
     group   => 'robot',
     mode    => '0600',
