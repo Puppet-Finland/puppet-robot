@@ -89,9 +89,23 @@ class robot (
     enable => true,
   }
 
-  package { ['robotframework', 'robotframework-seleniumlibrary']:
+  # Prerequisites for robotframework-browser
+  package { ['nodejs', 'npm']:
+    ensure => present,
+  }
+
+  # Robot Framework and its libraries
+  package { ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser']:
     ensure   => present,
     provider => 'pip3',
+  }
+
+  # Install embedded browsers for the Browser library
+  exec { 'rfbrowser init':
+    command => '/usr/local/bin/rfbrowser init',
+    creates => "${robot_home}/.local/lib/python3.8/site-packages/Browser/wrapper/node_modules/playwright-core/.local-browsers",
+    user    => 'robot',
+    require => [Package['nodejs'], Package['npm'], Package['robotframework-browser']],
   }
 
   # Install the gecko test driver (for Firefox Selenium tests)
