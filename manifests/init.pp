@@ -90,8 +90,12 @@ class robot (
   }
 
   # Prerequisites for robotframework-browser
-  package { ['nodejs', 'npm']:
-    ensure => present,
+  #
+  # Default node.js in Ubuntu 20.04 is too old for the Browser library so
+  # we use packages from nodesource.
+  #
+  class { 'nodejs':
+    repo_url_suffix => '18.x',
   }
 
   # Robot Framework and its libraries
@@ -105,7 +109,7 @@ class robot (
     command => '/usr/local/bin/rfbrowser init',
     creates => "${robot_home}/.local/lib/python3.8/site-packages/Browser/wrapper/node_modules/playwright-core/.local-browsers",
     user    => 'robot',
-    require => [Package['nodejs'], Package['npm'], Package['robotframework-browser']],
+    require => [Package['nodejs'], Package['robotframework-browser']],
   }
 
   # Install the gecko test driver (for Firefox Selenium tests)
