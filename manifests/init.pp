@@ -99,7 +99,7 @@ class robot (
   }
 
   # Robot Framework and its libraries
-  package { ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser']:
+  package { ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser', 'robotframework-imaplibrary2']:
     ensure   => present,
     provider => 'pip3',
   }
