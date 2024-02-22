@@ -3,6 +3,8 @@
 #
 # @url https://www.digitalocean.com/community/tutorials/how-to-install-and-configure-vnc-on-ubuntu-20-04
 #
+# @param manage_pip3_install
+#   Install pip3 (required to install Robot Framework and its libraries)
 # @param robot_user_password
 #   Password hash for user "robot"
 # @param robot_user_sshkeys
@@ -16,9 +18,16 @@ class robot (
   String        $robot_user_password,
   Array[String] $robot_user_sshkeys,
   String        $vnc_password,
-  String        $deployment_key
+  String        $deployment_key,
+  Boolean       $manage_pip3_install = true
 ) {
   $robot_home          = '/home/robot'
+
+  if $manage_pip3_install {
+    package { 'python3-pip':
+      ensure => 'present',
+    }
+  }
 
   # We use a light-weight desktop to reduce memory and CPU footprint
   package { ['xfce4', 'xfce4-goodies']:

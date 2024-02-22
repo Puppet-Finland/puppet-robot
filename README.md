@@ -7,6 +7,7 @@ the (currently mandatory) installation of the SSH deployment key.
 
 # What this module affects
 
+* Installation of 'python3-pip' package (configurable)
 * Creation of local "robot" user with deployment key and authorized keys
 * installing a desktop environment (for browser-based Robot tasks and tests)
 * Setting up VNC to start up as a systemd service
