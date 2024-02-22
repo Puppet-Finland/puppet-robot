@@ -107,18 +107,26 @@ class robot (
     repo_url_suffix => '18.x',
   }
 
-  # Robot Framework and its libraries
-  package { ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser', 'robotframework-imaplibrary2']:
-    ensure   => present,
-    provider => 'pip3',
+  $pip3_packages = ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser', 'robotframework-imaplibrary2']
+
+  # Install the packages with Exec. On Ubuntu 22.04 installing these as root
+  # using the pip3 package provider would make "rfbrowser init" fail later in
+  # this manifects.
+  $pip3_packages.each |String $package| {
+    exec { "install ${package}":
+      user    => 'robot',
+      command => "/usr/bin/pip3 install ${package}",
+      unless  => "/usr/bin/pip3 show ${package}",
+      before  => Exec['rfbrowser init'],
+    }
   }
 
   # Install embedded browsers for the Browser library
   exec { 'rfbrowser init':
-    command => '/usr/local/bin/rfbrowser init',
-    creates => "${robot_home}/.local/lib/python3.8/site-packages/Browser/wrapper/node_modules/playwright-core/.local-browsers",
+    command => "${robot_home}/.local/bin/rfbrowser init",
+    unless  => "/usr/bin/find ${robot_home}/.local/lib -name .local-browsers|grep .local-browsers",
     user    => 'robot',
-    require => [Package['nodejs'], Package['robotframework-browser']],
+    require => [Package['nodejs'], Exec['install robotframework-browser']],
   }
 
   # Install the gecko test driver (for Firefox Selenium tests)
