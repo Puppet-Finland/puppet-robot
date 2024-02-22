@@ -153,4 +153,11 @@ class robot (
     content => $deployment_key,
     require => Accounts::User['robot'],
   }
+
+  # Ensure that robot, rfbrowser and other executables are in PATH
+  file_line { 'robot-path-local-bin':
+    path    => "${robot_home}/.bashrc",
+    line    => 'export PATH=$PATH:~/.local/bin',
+    require => Accounts::User['robot'],
+  }
 }
