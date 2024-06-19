@@ -104,7 +104,7 @@ class robot (
   # we use packages from nodesource.
   #
   class { 'nodejs':
-    repo_url_suffix => '18.x',
+    repo_version => '18',
   }
 
   $pip3_packages = ['robotframework', 'robotframework-seleniumlibrary', 'robotframework-browser', 'robotframework-imaplibrary2']
