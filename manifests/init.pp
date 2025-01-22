@@ -115,7 +115,7 @@ class robot (
   $pip3_packages.each |String $package| {
     exec { "install ${package}":
       user    => 'robot',
-      command => "/usr/bin/pip3 install ${package}",
+      command => "/usr/bin/pip3 install ${package} --break-system-packages",
       unless  => "/usr/bin/pip3 show ${package}",
       before  => Exec['rfbrowser init'],
     }
