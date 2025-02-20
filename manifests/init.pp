@@ -131,7 +131,7 @@ class robot (
 
   # Install the gecko test driver (for Firefox Selenium tests)
   exec { 'get geckodriver':
-    command => 'curl -L https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz|tar -C /usr/local/bin -xz',
+    command => 'curl -L https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz|tar -C /usr/local/bin -xz',
     user    => 'root',
     creates => '/usr/local/bin/geckodriver',
     path    => ['/bin', '/usr/bin'],
